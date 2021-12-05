@@ -1,6 +1,8 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "jsx": "react",
+    "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "paths": {
       "/@/*": [
@@ -11,7 +13,6 @@
   },
 
   "include": [
-    "src/**/*.vue",
     "src/**/*.ts",
     "src/**/*.tsx",
     "types/**/*.d.ts",

@@ -1,7 +1,6 @@
-import {app, BrowserWindow, shell} from 'electron';
-import {join} from 'path';
-import {URL} from 'url';
-
+import { app, BrowserWindow } from 'electron';
+import { join } from 'path';
+import { URL } from 'url';
 
 const isSingleInstance = app.requestSingleInstanceLock();
 const isDevelopment = import.meta.env.MODE === 'development';
@@ -13,16 +12,19 @@ if (!isSingleInstance) {
 
 app.disableHardwareAcceleration();
 
-// Install "Vue.js devtools"
-if (isDevelopment) {
-  app.whenReady()
+// Install "React.js devtools"
+if (import.meta.env.MODE === 'development') {
+  app
+    .whenReady()
     .then(() => import('electron-devtools-installer'))
-    .then(({default: installExtension, VUEJS3_DEVTOOLS}) => installExtension(VUEJS3_DEVTOOLS, {
-      loadExtensionOptions: {
-        allowFileAccess: true,
-      },
-    }))
-    .catch(e => console.error('Failed install extension:', e));
+    .then(({ default: installExtension, REACT_DEVELOPER_TOOLS }) =>
+      installExtension(REACT_DEVELOPER_TOOLS, {
+        loadExtensionOptions: {
+          allowFileAccess: true,
+        },
+      }),
+    )
+    .catch((e) => console.error('Failed install extension:', e));
 }
 
 let mainWindow: BrowserWindow | null = null;
@@ -34,6 +36,8 @@ const createWindow = async () => {
       nativeWindowOpen: true,
       webviewTag: false, // The webview tag is not recommended. Consider alternatives like iframe or Electron's BrowserView. https://www.electronjs.org/docs/latest/api/webview-tag#warning
       preload: join(__dirname, '../../preload/dist/index.cjs'),
+      contextIsolation: import.meta.env.MODE !== 'test', // Spectron tests can't work with contextIsolation: true
+      enableRemoteModule: import.meta.env.MODE === 'test', // Spectron tests can't work with enableRemoteModule: false
     },
   });
 
@@ -46,9 +50,11 @@ const createWindow = async () => {
   mainWindow.on('ready-to-show', () => {
     mainWindow?.show();
 
-    if (isDevelopment) {
-      mainWindow?.webContents.openDevTools();
-    }
+    // if (isDevelopment) {
+    //   mainWindow?.webContents.openDevTools();
+    // }
+    mainWindow?.webContents.openDevTools();
+
   });
 
   /**
@@ -56,10 +62,14 @@ const createWindow = async () => {
    * Vite dev server for development.
    * `file://../renderer/index.html` for production and test
    */
-  const pageUrl = isDevelopment && import.meta.env.VITE_DEV_SERVER_URL !== undefined
-    ? import.meta.env.VITE_DEV_SERVER_URL
-    : new URL('../renderer/dist/index.html', 'file://' + __dirname).toString();
-
+  const pageUrl =
+    import.meta.env.MODE === 'development' &&
+    import.meta.env.VITE_DEV_SERVER_URL !== undefined
+      ? import.meta.env.VITE_DEV_SERVER_URL
+      : new URL(
+          '../renderer/dist/index.html',
+          'file://' + __dirname,
+        ).toString();
 
   await mainWindow.loadURL(pageUrl);
 };
@@ -169,7 +179,8 @@ app.on('window-all-closed', () => {
 });
 
 
-app.whenReady()
+app
+  .whenReady()
   .then(createWindow)
   .catch((e) => console.error('Failed create window:', e));
 
@@ -178,7 +189,7 @@ app.whenReady()
 if (import.meta.env.PROD) {
   app.whenReady()
     .then(() => import('electron-updater'))
-    .then(({autoUpdater}) => autoUpdater.checkForUpdatesAndNotify())
+    .then(({ autoUpdater }) => autoUpdater.checkForUpdatesAndNotify())
     .catch((e) => console.error('Failed check updates:', e));
 }
 

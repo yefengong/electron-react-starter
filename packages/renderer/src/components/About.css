@@ -1,0 +1,5 @@
+div {
+  text-align: left;
+  display: grid;
+  justify-content: center;
+}
