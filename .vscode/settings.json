@@ -1,0 +1,7 @@
+{
+    "commentTranslate.targetLanguage": "zh-CN",
+    "files.exclude": {
+      "**/node_modules": true,
+      "**/dist": false
+    },
+}

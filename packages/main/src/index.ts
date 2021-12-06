@@ -35,7 +35,8 @@ const createWindow = async () => {
     webPreferences: {
       nativeWindowOpen: true,
       webviewTag: false, // The webview tag is not recommended. Consider alternatives like iframe or Electron's BrowserView. https://www.electronjs.org/docs/latest/api/webview-tag#warning
-      preload: join(__dirname, '../../preload/dist/index.cjs'),
+      preload: join(__dirname, '../preload/index.cjs'),
+      nodeIntegration: true,
       contextIsolation: import.meta.env.MODE !== 'test', // Spectron tests can't work with contextIsolation: true
       // enableRemoteModule: import.meta.env.MODE === 'test', // Spectron tests can't work with enableRemoteModule: false
     },
@@ -67,7 +68,7 @@ const createWindow = async () => {
     import.meta.env.VITE_DEV_SERVER_URL !== undefined
       ? import.meta.env.VITE_DEV_SERVER_URL
       : new URL(
-          '../renderer/dist/index.html',
+          '../dist/renderer/index.html',
           'file://' + __dirname,
         ).toString();
 

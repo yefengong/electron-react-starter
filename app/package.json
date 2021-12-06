@@ -1,0 +1,6 @@
+{
+  "name": "vite-electron-builder",
+  "main": "dist/main/index.cjs",
+  "dependencies": {
+  }
+}

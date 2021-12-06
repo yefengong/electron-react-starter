@@ -21,7 +21,7 @@ const config = {
   build: {
     sourcemap: 'inline',
     target: `node${node}`,
-    outDir: 'dist',
+    outDir: join(process.cwd(), 'app', 'dist', 'main'),
     assetsDir: '.',
     minify: process.env.MODE !== 'development',
     lib: {

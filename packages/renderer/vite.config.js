@@ -29,7 +29,7 @@ const config = {
   build: {
     sourcemap: true,
     target: `chrome${chrome}`,
-    outDir: 'dist',
+    outDir: join(process.cwd(), 'app', 'dist', 'renderer'),
     assetsDir: '.',
     rollupOptions: {
       external: [

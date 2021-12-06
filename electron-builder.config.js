@@ -13,7 +13,8 @@ const config = {
     buildResources: 'buildResources',
   },
   files: [
-    'packages/**/dist/**',
+    'dist/**',
+    '!**/*.map',
   ],
   extraMetadata: {
     version: process.env.VITE_APP_VERSION,

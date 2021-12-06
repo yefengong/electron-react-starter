@@ -20,7 +20,7 @@ const config = {
   build: {
     sourcemap: 'inline',
     target: `chrome${chrome}`,
-    outDir: 'dist',
+    outDir: join(process.cwd(), 'app', 'dist', 'preload'),
     assetsDir: '.',
     minify: process.env.MODE !== 'development',
     lib: {
