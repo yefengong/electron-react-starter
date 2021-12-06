@@ -1,6 +1,7 @@
 import {node} from '../../electron-vendors.config.json';
 import {join} from 'path';
 import {builtinModules} from 'module';
+import { injectEnvVariable } from '../../scripts/inject-env-variable';
 
 const PACKAGE_ROOT = __dirname;
 
@@ -41,6 +42,7 @@ const config = {
     emptyOutDir: true,
     brotliSize: false,
   },
+  envPrefix: injectEnvVariable(),
 };
 
 export default config;

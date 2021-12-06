@@ -1,9 +1,9 @@
 /* eslint-env node */
-
 import {chrome} from '../../electron-vendors.config.json';
 import {join} from 'path';
 import {builtinModules} from 'module';
 import reactRefresh from '@vitejs/plugin-react-refresh';
+import { injectEnvVariable } from '../../scripts/inject-env-variable';
 
 const PACKAGE_ROOT = __dirname;
 
@@ -11,7 +11,7 @@ const PACKAGE_ROOT = __dirname;
  * @type {import('vite').UserConfig}
  * @see https://vitejs.dev/config/
  */
-const config = {
+ const config = {
   mode: process.env.MODE,
   root: PACKAGE_ROOT,
   resolve: {
@@ -39,6 +39,7 @@ const config = {
     emptyOutDir: true,
     brotliSize: false,
   },
+  envPrefix: injectEnvVariable(),
 };
 
 export default config;

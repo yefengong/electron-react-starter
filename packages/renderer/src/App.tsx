@@ -16,6 +16,11 @@ const App: React.FC = () => {
       <Link to="/about" style={{ padding: 5 }}>
         About
       </Link>
+      {
+        import.meta.env.__DARWIN__ && (
+          <div>__PLATFORM__: darwin</div>
+        )
+      }
       <Switch>
         <Route exact path="/" component={Home} />
         <Route path="/about" component={About} />
